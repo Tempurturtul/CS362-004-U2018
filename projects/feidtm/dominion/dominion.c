@@ -655,14 +655,11 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
-  int drawntreasure=0;
-  int cardDrawn;
-  int z = 0;// this is the counter for the temp hand
+
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
   
-        
   //uses switch to select card and perform actions
   switch( card ) 
     {
@@ -784,31 +781,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
                         
     case remodel:
-      j = state->hand[currentPlayer][choice1];  //store card we will trash
-
-      if ( (getCost(state->hand[currentPlayer][choice1]) + 2) > getCost(choice2) )
-        {
-          return -1;
-        }
-
-      gainCard(choice2, state, 0, currentPlayer);
-
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-
-      //discard trashed card
-      for (i = 0; i < state->handCount[currentPlayer]; i++)
-        {
-          if (state->hand[currentPlayer][i] == j)
-            {
-              discardCard(i, currentPlayer, state, 0);                        
-              break;
-            }
-        }
-
-
-      return 0;
-                
+      return remodelEffect(choice1, choice2, state, handPos);
     case smithy:
       //+3 Cards
       for (i = 0; i < 3; i++)
@@ -894,56 +867,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
                 
     case minion:
-      //+1 action
-      state->numActions++;
-                        
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-                        
-      if (choice1)                //+2 coins
-        {
-          state->coins = state->coins + 2;
-        }
-                        
-      else if (choice2)                //discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
-        {
-          //discard hand
-          while(numHandCards(state) > 0)
-            {
-              discardCard(handPos, currentPlayer, state, 0);
-            }
-                                
-          //draw 4
-          for (i = 0; i < 4; i++)
-            {
-              drawCard(currentPlayer, state);
-            }
-                                
-          //other players discard hand and redraw if hand size > 4
-          for (i = 0; i < state->numPlayers; i++)
-            {
-              if (i != currentPlayer)
-                {
-                  if ( state->handCount[i] > 4 )
-                    {
-                      //discard hand
-                      while( state->handCount[i] > 0 )
-                        {
-                          discardCard(handPos, i, state, 0);
-                        }
-                                                        
-                      //draw 4
-                      for (j = 0; j < 4; j++)
-                        {
-                          drawCard(i, state);
-                        }
-                    }
-                }
-            }
-                                
-        }
-      return 0;
-                
+      return minionEffect(choice1, choice2, state, handPos);
     case steward:
       if (choice1 == 1)
         {
@@ -1355,15 +1279,85 @@ int adventurerEffect(struct gameState *state)
 
 // }
 
-// int minionEffect()
-// {
+int minionEffect(int choice1, int choice2, struct gameState *state, int handPos)
+{
+  int i;
+  int j;
+  int currentPlayer = whoseTurn(state);
 
-// }
+  // +1 action
+  state->numActions++;
 
-// int remodelEffect()
-// {
+  // discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
 
-// }
+  if (choice1) {
+    // +2 coins
+    state->coins = state->coins + 2;
+  } else if (choice2) {
+    // discard hand, redraw 4, other players with 5+ cards discard hand and draw 4
+
+    // discard hand
+    while(numHandCards(state) > 0) {
+      discardCard(handPos, currentPlayer, state, 0);
+    }
+
+    // draw 4
+    for (i = 0; i < 4; i++) {
+      drawCard(currentPlayer, state);
+    }
+
+    // other players discard hand and redraw if hand size > 4
+    for (i = 0; i < state->numPlayers; i++) {
+      if (i != currentPlayer) {
+        if (state->handCount[i] > 4) {
+          //discard hand
+          while(state->handCount[i] > 0) {
+            discardCard(handPos, i, state, 0);
+          }
+          // draw 4
+          for (j = 0; j < 4; j++) {
+            drawCard(i, state);
+          }
+        }
+      }
+    }
+  }
+
+  return 0;
+}
+
+int remodelEffect(int choice1, int choice2, struct gameState *state, int handPos)
+{
+  int i;
+  int j;
+  int currentPlayer = whoseTurn(state);
+
+  // store card we will trash
+  j = state->hand[currentPlayer][choice1];
+
+  if ( (getCost(state->hand[currentPlayer][choice1]) + 2) > getCost(choice2) )
+    {
+      return -1;
+    }
+
+  gainCard(choice2, state, 0, currentPlayer);
+
+  // discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+
+  // discard trashed card
+  for (i = 0; i < state->handCount[currentPlayer]; i++)
+    {
+      if (state->hand[currentPlayer][i] == j)
+        {
+          discardCard(i, currentPlayer, state, 0);
+          break;
+        }
+    }
+
+  return 0;
+}
 
 // int smithyEffect()
 // {
