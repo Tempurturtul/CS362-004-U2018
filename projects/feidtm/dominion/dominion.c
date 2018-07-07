@@ -1243,7 +1243,7 @@ int adventurerEffect(struct gameState *state)
     // top card of hand is most recently drawn card
     cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];
 
-    if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold) {
+    if (cardDrawn == copper || cardDrawn == silver/* || cardDrawn == gold*/) { // BUG: Gold doesn't count as treasure.
       drawntreasure++;
     } else {
       temphand[z]=cardDrawn;
@@ -1274,7 +1274,7 @@ int minionEffect(int choice1, int choice2, struct gameState *state, int handPos)
   int currentPlayer = whoseTurn(state);
 
   // +1 action
-  state->numActions++;
+  // state->numActions++; // BUG: +0 action instead of +1
 
   // discard card from hand
   discardCard(handPos, currentPlayer, state, 0);
@@ -1298,7 +1298,7 @@ int minionEffect(int choice1, int choice2, struct gameState *state, int handPos)
     // other players discard hand and redraw if hand size > 4
     for (i = 0; i < state->numPlayers; i++) {
       if (i != currentPlayer) {
-        if (state->handCount[i] > 4) {
+        if (state->handCount[i] > 3) { // BUG: other players discard if and size > 3 instead of > 4
           //discard hand
           while(state->handCount[i] > 0) {
             discardCard(handPos, i, state, 0);
@@ -1339,7 +1339,7 @@ int remodelEffect(int choice1, int choice2, struct gameState *state, int handPos
     {
       if (state->hand[currentPlayer][i] == j)
         {
-          discardCard(i, currentPlayer, state, 0);
+          discardCard(i-1, currentPlayer, state, 0); // BUG: Wrong card is trashed.
           break;
         }
     }
@@ -1353,7 +1353,7 @@ int smithyEffect(struct gameState *state, int handPos)
   int currentPlayer = whoseTurn(state);
 
   // +3 Cards
-  for (i = 0; i < 3; i++) {
+  for (i = 0; i < 4; i++) { // BUG: +4 cards instead of +3.
     drawCard(currentPlayer, state);
   }
 
