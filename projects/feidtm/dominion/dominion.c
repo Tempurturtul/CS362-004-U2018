@@ -743,8 +743,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return 0;
                         
     case gardens:
-      return -1;
-                        
+      return gardensEffect();
     case mine:
       j = state->hand[currentPlayer][choice1];  //store card we will trash
 
@@ -783,16 +782,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
     case remodel:
       return remodelEffect(choice1, choice2, state, handPos);
     case smithy:
-      //+3 Cards
-      for (i = 0; i < 3; i++)
-        {
-          drawCard(currentPlayer, state);
-        }
-                        
-      //discard card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
-                
+      return smithyEffect(state, handPos);
     case village:
       //+1 Card
       drawCard(currentPlayer, state);
@@ -1233,8 +1223,6 @@ int updateCoins(int player, struct gameState *state, int bonus)
   return 0;
 }
 
-//end of dominion.c
-
 int adventurerEffect(struct gameState *state)
 {
   int drawntreasure = 0;
@@ -1274,10 +1262,10 @@ int adventurerEffect(struct gameState *state)
   return 0;
 }
 
-// int gardensEffect()
-// {
-
-// }
+int gardensEffect()
+{
+  return -1;
+}
 
 int minionEffect(int choice1, int choice2, struct gameState *state, int handPos)
 {
@@ -1359,7 +1347,20 @@ int remodelEffect(int choice1, int choice2, struct gameState *state, int handPos
   return 0;
 }
 
-// int smithyEffect()
-// {
+int smithyEffect(struct gameState *state, int handPos)
+{
+  int i;
+  int currentPlayer = whoseTurn(state);
 
-// }
+  // +3 Cards
+  for (i = 0; i < 3; i++) {
+    drawCard(currentPlayer, state);
+  }
+
+  // discard card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+
+  return 0;
+}
+
+//end of dominion.c
