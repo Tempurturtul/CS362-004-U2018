@@ -63,6 +63,16 @@ cardtest4: cardtest4.c unittest_helpers.o dominion.o rngs.o
 
 cardtests: cardtest1 cardtest2 cardtest3 cardtest4
 
+unittestresults: unittests cardtests
+	./unittest1 > unittestresults.out
+	./unittest2 >> unittestresults.out
+	./unittest3 >> unittestresults.out
+	./unittest4 >> unittestresults.out
+	./cardtest1 >> unittestresults.out
+	./cardtest2 >> unittestresults.out
+	./cardtest3 >> unittestresults.out
+	./cardtest4 >> unittestresults.out
+
 all: playdom player 
 
 clean:
@@ -70,3 +80,4 @@ clean:
 	rm -f *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
 	rm -f unittest1 unittest2 unittest3 unittest4
 	rm -f cardtest1 cardtest2 cardtest3 cardtest4
+	rm -f unittestresults.out
