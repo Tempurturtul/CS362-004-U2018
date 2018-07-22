@@ -81,4 +81,3 @@ clean:
 	rm -f *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
 	rm -f unittest1 unittest2 unittest3 unittest4
 	rm -f cardtest1 cardtest2 cardtest3 cardtest4
-	rm -f unittestresults.out

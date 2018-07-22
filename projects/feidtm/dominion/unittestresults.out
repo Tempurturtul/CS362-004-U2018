@@ -1,0 +1,35 @@
+TESTING adventurerEffect():
+test failed: a card is discarded
+test failed: adventurer card is discarded
+Done testing.
+TESTING minionEffect():
+TESTING choice 1:
+test failed: +1 action gained
+TESTING choice 2:
+test failed: +1 action gained
+Done testing.
+TESTING remodelEffect():
+test failed: choice1 discarded
+test failed: two cards discarded, one card gained
+test failed: selected card gained
+Done testing.
+TESTING smithyEffect():
+test failed: 3 cards are drawn
+test failed: 3 cards drawn came from player's own deck
+Done testing.
+TESTING adventurer card:
+Done testing.
+TESTING minion card:
+Done testing.
+TESTING remodel card:
+test failed: effect succeeds
+Done testing.
+TESTING smithy card:
+Done testing.
+File 'dominion.c'
+Lines executed:32.57% of 608
+Branches executed:38.80% of 415
+Taken at least once:24.34% of 415
+Calls executed:30.30% of 99
+Creating 'dominion.c.gcov'
+
