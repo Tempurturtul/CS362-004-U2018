@@ -49,14 +49,13 @@ void testRemodelEffect()
     // Make sure effect succeeds.
     assert(remodelEffect(choice1, choice2, &state, handPos) == 0, "effect succeeds");
 
-    // Remodel and selected card are discarded, and a card is gained.
-    assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer]-1-1+1, "two cards discarded, one card gained");
+    // Remodel and selected card are discarded.
+    assert(state.playedCards[state.playedCardCount-2] == prevState.hand[currentPlayer][handPos], "remodel discarded");
+    assert(state.playedCards[state.playedCardCount-1] == prevState.hand[currentPlayer][choice1], "choice1 discarded");
 
-    // Remodel is discarded.
-    // TODO
-
-    // Selected card is discarded.
-    // TODO
+    // A card is gained.
+    assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer] - 2 + 1, "two cards discarded, one card gained");
+    assert(state.hand[currentPlayer][state.handCount[currentPlayer] - 1] == choice2, "selected card gained");
 
     // Gained card is worth no more than 2 more than the trashed card.
     assert(getCost(choice2) <= prevState.hand[currentPlayer][choice1] + 2, "gained card is worth <= trashed card + 2");

@@ -44,8 +44,8 @@ void testSmithyEffect()
     assert(state.playedCards[state.playedCardCount-1] == prevState.hand[currentPlayer][handPos], "smithy is discarded");
 
     // 3 cards are gained.
-    assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer] - 3, "3 cards are drawn");
-    assert(state.deckCount[currentPlayer] == prevState.deckCount[currentPlayer] - 3, "drawn cards came from player's own deck");
+    assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer] - 4, "3 cards are drawn");
+    assert(state.deckCount[currentPlayer] == prevState.deckCount[currentPlayer] - 3, "3 cards drawn came from player's own deck");
 
     // Make sure other players cards haven't changed.
     int i;

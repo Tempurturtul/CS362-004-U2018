@@ -91,7 +91,8 @@ void testMinionEffect()
     assert(state.numActions == prevState.numActions+1, "+1 action gained");
 
     // Make sure hand discarded and +4 cards drawn.
-    assert(state.discardCount[currentPlayer] == prevState.discardCount[currentPlayer] + prevState.handCount[currentPlayer], "hand discarded");
+    assert(state.playedCardCount == prevState.playedCardCount + prevState.handCount[currentPlayer], "hand discarded");
+
     assert(state.handCount[currentPlayer] == 4, "4 cards drawn");
     assert(state.deckCount[currentPlayer] == prevState.deckCount[currentPlayer] - 4, "drawn cards came from player's own deck");
 
