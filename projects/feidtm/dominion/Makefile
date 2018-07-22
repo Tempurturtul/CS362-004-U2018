@@ -72,6 +72,7 @@ unittestresults: unittests cardtests
 	./cardtest2 >> unittestresults.out
 	./cardtest3 >> unittestresults.out
 	./cardtest4 >> unittestresults.out
+	gcov -b dominion.c >> unittestresults.out
 
 all: playdom player 
 
