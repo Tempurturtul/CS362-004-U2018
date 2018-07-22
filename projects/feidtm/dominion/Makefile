@@ -49,7 +49,24 @@ unittest4: unittest4.c unittest_helpers.o dominion.o rngs.o
 
 unittests: unittest1 unittest2 unittest3 unittest4
 
+cardtest1: cardtest1.c unittest_helpers.o dominion.o rngs.o
+	gcc -o cardtest1 -g cardtest1.c unittest_helpers.o dominion.o rngs.o $(CFLAGS)
+
+cardtest2: cardtest2.c unittest_helpers.o dominion.o rngs.o
+	gcc -o cardtest2 -g cardtest2.c unittest_helpers.o dominion.o rngs.o $(CFLAGS)
+
+cardtest3: cardtest3.c unittest_helpers.o dominion.o rngs.o
+	gcc -o cardtest3 -g cardtest3.c unittest_helpers.o dominion.o rngs.o $(CFLAGS)
+
+cardtest4: cardtest4.c unittest_helpers.o dominion.o rngs.o
+	gcc -o cardtest4 -g cardtest4.c unittest_helpers.o dominion.o rngs.o $(CFLAGS)
+
+cardtests: cardtest1 cardtest2 cardtest3 cardtest4
+
 all: playdom player 
 
 clean:
-	rm -f *.o playdom.exe playdom player player.exe  *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe unittest1 unittest2 unittest3 unittest4
+	rm -f *.o playdom.exe playdom player player.exe
+	rm -f *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f unittest1 unittest2 unittest3 unittest4
+	rm -f cardtest1 cardtest2 cardtest3 cardtest4
