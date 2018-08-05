@@ -7,6 +7,8 @@
 #include "rngs.h"
 #include "unittest_helpers.h"
 
+#define NUM_TESTS 100
+
 struct gameState *randomGameState()
 {
     // Allocate memory for game state we're going to return.
@@ -47,28 +49,6 @@ struct gameState *randomGameState()
 
     // Return game state.
     return g;
-}
-
-void testAdventurerEffect(struct gameState*);
-
-int main()
-{
-    // Initialize random seed.
-    srand(time(NULL));
-
-    printf("RANDOM TESTING adventurerEffect():\n");
-
-    struct gameState *g;
-
-    // Get a random game state.
-    g = randomGameState();
-
-    // Test the adventurer effect.
-    testAdventurerEffect(g);
-
-    printf("DONE RANDOM TESTING adventurerEffect()\n");
-
-    return 0;
 }
 
 void testAdventurerEffect(struct gameState *state)
@@ -116,4 +96,26 @@ void testAdventurerEffect(struct gameState *state)
         assert(sameDeck(state, &prevState, i), "other players' decks don't change");
         assert(sameDiscard(state, &prevState, i), "other players' discard piles don't change");
     }
+}
+
+int main()
+{
+    // Initialize random seed.
+    srand(time(NULL));
+
+    printf("RANDOM TESTING adventurerEffect():\n");
+
+    struct gameState *g;
+
+    int i;
+    for (i = 0; i < NUM_TESTS; i++) {
+        // Get a random game state.
+        g = randomGameState();
+        // Test the adventurer effect.
+        testAdventurerEffect(g);
+    }
+
+    printf("DONE RANDOM TESTING adventurerEffect()\n");
+
+    return 0;
 }
