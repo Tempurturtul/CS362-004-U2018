@@ -51,29 +51,42 @@ struct gameState *randomGameState()
     return g;
 }
 
-void testRemodelEffect(struct gameState *state)
+void testRemodelEffect(struct gameState *state, int choice1, int choice2, int handPos)
 {
     int currentPlayer = whoseTurn(state);
 
     struct gameState prevState;
     memcpy(&prevState, state, sizeof(struct gameState));
 
-    // We're just going to pretend the first card in the player's hand is Remodel.
-    int handPos = 0;
+    int effectReturnVal = remodelEffect(choice1, choice2, state, handPos);
 
-    int choice1 = 1; // card to trash
-    int choice2 = -1; // card to gain
+    // If inputs are valid, ensure effect succeeds, otherwise ensure effect fails and stop testing.
 
-    int i;
-    for (i = estate; i < treasure_map+1; i++) {
-        if (state->supplyCount[i] > 0 && getCost(i) <= state->hand[currentPlayer][choice1] + 1) {
-            choice2 = i;
-            break;
-        }
+    int effectReturnValShouldBe = 0;
+
+    // handPos must be in player's hand.
+    if (handPos > prevState.handCount[currentPlayer] - 1) {
+        effectReturnValShouldBe = -1;
+    }
+    // choice1 must be in player's hand and not handPos.
+    if (choice1 == handPos || choice1 > prevState.handCount[currentPlayer] - 1) {
+        effectReturnValShouldBe = -1;
+    }
+    // choice2 must be a possible card with a supply.
+    if (choice2 > treasure_map || prevState.supplyCount[choice2] <= 0) {
+        effectReturnValShouldBe = -1;
+    }
+    // Cost of choice2 must be <= cost of choice1 + 2.
+    if (getCost(choice2) > getCost(prevState.hand[currentPlayer][choice1]) + 2) {
+        effectReturnValShouldBe = -1;
     }
 
-    // Make sure effect succeeds.
-    assert(remodelEffect(choice1, choice2, state, handPos) == 0, "effect succeeds");
+    if (effectReturnValShouldBe == 0) {
+        assert(effectReturnVal == effectReturnValShouldBe, "effect succeeds");
+    } else {
+        assert(effectReturnVal == effectReturnValShouldBe, "effect fails");
+        return;
+    }
 
     // Remodel and selected card are discarded.
     assert(state->playedCards[state->playedCardCount-2] == prevState.hand[currentPlayer][handPos], "remodel discarded");
@@ -84,9 +97,10 @@ void testRemodelEffect(struct gameState *state)
     assert(state->hand[currentPlayer][state->handCount[currentPlayer] - 1] == choice2, "selected card gained");
 
     // Gained card is worth no more than 2 more than the trashed card.
-    assert(getCost(choice2) <= prevState.hand[currentPlayer][choice1] + 2, "gained card is worth <= trashed card + 2");
+    assert(getCost(choice2) <= getCost(prevState.hand[currentPlayer][choice1]) + 2, "gained card is worth <= trashed card + 2");
 
     // No other players have a change of state.
+    int i;
     for (i = 0; i < state->numPlayers; i++) {
         if (i == currentPlayer) {
             continue;
@@ -111,8 +125,16 @@ int main()
     for (i = 0; i < NUM_TESTS; i++) {
         // Get a random game state.
         g = randomGameState();
-        // Test the adventurer effect.
-        testRemodelEffect(g);
+
+        int choice1, choice2, handPos;
+
+        // Pick random cards for choice 1 and 2, and for the remodel card.
+        handPos = rand() % 7; // Which card in the player's hand is the remodel card.
+        choice1 = rand() % 7; // Which card the player will discard.
+        choice2 = rand() % treasure_map + 1; // Which card the player will choose to gain.
+
+        // Test the effect.
+        testRemodelEffect(g, choice1, choice2, handPos);
     }
 
     printf("DONE RANDOM TESTING remodelEffect()\n");
