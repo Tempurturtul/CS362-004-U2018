@@ -30,9 +30,9 @@ void testMinionEffect(struct gameState *state, int choice1, int choice2, int han
     }
 
     if (effectReturnValShouldBe == 0) {
-        assert(effectReturnVal == effectReturnValShouldBe, "effect succeeds");
+        assert(effectReturnVal == 0, "effect succeeds");
     } else {
-        assert(effectReturnVal == effectReturnValShouldBe, "effect fails");
+        assert(effectReturnVal != 0, "effect fails");
         return;
     }
 
