@@ -15,7 +15,7 @@ void testRemodelEffect(struct gameState *state, int choice1, int choice2, int ha
     struct gameState prevState;
     memcpy(&prevState, state, sizeof(struct gameState));
 
-    int effectReturnVal = remodelEffect(choice1, choice2, state, handPos);
+    int effectReturnVal = cardEffect(remodel, choice1, choice2, 0, state, handPos, NULL);
 
     // If inputs are valid, ensure effect succeeds, otherwise ensure effect fails and stop testing.
 

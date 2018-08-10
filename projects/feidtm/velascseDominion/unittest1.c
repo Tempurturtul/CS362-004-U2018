@@ -9,7 +9,7 @@
 
 void testAdventurerEffect()
 {
-    printf ("TESTING adventurerEffect():\n");
+    printf ("TESTING adventurer_func():\n");
 
     struct gameState state;
 
@@ -33,8 +33,10 @@ void testAdventurerEffect()
 
     struct gameState prevState = state;
 
+    int handPos = 0;
+
     // Make sure effect succeeds.
-    assert(adventurerEffect(&state) == 0, "effect succeeds");
+    assert(adventurer_func(handPos, &state) == 0, "effect succeeds");
 
     // Make sure adventurer card is discarded.
     assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer]-1, "a card is discarded");

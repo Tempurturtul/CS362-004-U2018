@@ -10,13 +10,14 @@
 
 void testAdventurerEffect(struct gameState *state)
 {
+    int handPos = 0;
     int currentPlayer = whoseTurn(state);
 
     struct gameState prevState;
     memcpy(&prevState, state, sizeof(struct gameState));
 
     // Make sure effect succeeds.
-    assert(adventurerEffect(state) == 0, "effect succeeds");
+    assert(adventurer_func(handPos, state) == 0, "effect succeeds");
 
     // Make sure adventurer card is discarded.
     assert(state->handCount[currentPlayer] == prevState.handCount[currentPlayer]-1, "a card is discarded");
@@ -60,7 +61,7 @@ int main()
     // Initialize random seed.
     srand(time(NULL));
 
-    printf("RANDOM TESTING adventurerEffect():\n");
+    printf("RANDOM TESTING adventurer_func():\n");
 
     struct gameState *g;
 
@@ -72,7 +73,7 @@ int main()
         testAdventurerEffect(g);
     }
 
-    printf("DONE RANDOM TESTING adventurerEffect()\n");
+    printf("DONE RANDOM TESTING adventurer_func()\n");
 
     return 0;
 }

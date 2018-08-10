@@ -47,7 +47,7 @@ void testRemodelEffect()
     }
 
     // Make sure effect succeeds.
-    assert(remodelEffect(choice1, choice2, &state, handPos) == 0, "effect succeeds");
+    assert(cardEffect(remodel, choice1, choice2, 0, &state, handPos, NULL) == 0, "effect succeeds");
 
     // Remodel and selected card are discarded.
     assert(state.playedCards[state.playedCardCount-2] == prevState.hand[currentPlayer][handPos], "remodel discarded");

@@ -9,7 +9,7 @@
 
 void testSmithyEffect()
 {
-    printf ("TESTING smithyEffect():\n");
+    printf ("TESTING smithy_func():\n");
 
     struct gameState state;
 
@@ -37,7 +37,7 @@ void testSmithyEffect()
     int handPos = 0;
 
     // Make sure effect succeeds.
-    assert(smithyEffect(&state, handPos) == 0, "effect succeeds");
+    assert(smithy_func(handPos, &state) == 0, "effect succeeds");
 
     // Make sure Smithy was discarded.
     assert(state.playedCardCount == prevState.playedCardCount + 1, "a card is discarded");

@@ -46,7 +46,7 @@ void testMinionEffect()
     choice2 = 0;
 
     // Make sure effect succeeds.
-    assert(minionEffect(choice1, choice2, &state, handPos) == 0, "effect succeeds");
+    assert(cardEffect(minion, choice1, choice2, 0, &state, handPos, NULL) == 0, "effect succeeds");
 
     // Make sure the Minion was discarded.
     assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer]-1, "a card is discarded");
@@ -81,7 +81,7 @@ void testMinionEffect()
     handPos = 0;
 
     // Make sure effect succeeds.
-    assert(minionEffect(choice1, choice2, &state, handPos) == 0, "effect succeeds");
+    assert(cardEffect(minion, choice1, choice2, 0, &state, handPos, NULL) == 0, "effect succeeds");
 
     // Make sure the Minion was discarded.
     assert(state.handCount[currentPlayer] == prevState.handCount[currentPlayer]-1, "a card is discarded");

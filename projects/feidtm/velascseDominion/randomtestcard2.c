@@ -16,7 +16,7 @@ void testMinionEffect(struct gameState *state, int choice1, int choice2, int han
     struct gameState prevState;
     memcpy(&prevState, state, sizeof(struct gameState));
 
-    int effectReturnVal = minionEffect(choice1, choice2, state, handPos);
+    int effectReturnVal = cardEffect(minion, choice1, choice2, 0, state, handPos, NULL);
 
     // If inputs are valid, ensure effect succeeds, otherwise ensure effect fails and stop testing.
 
